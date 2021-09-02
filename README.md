@@ -1,4 +1,4 @@
-# ODESSA/AMI plugin for pyannote.database
+# Fake VTC DB plugin for pyannote.database
 
 ## Installation
 
