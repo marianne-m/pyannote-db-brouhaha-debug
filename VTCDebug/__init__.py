@@ -25,14 +25,14 @@
 import json
 
 from ._version import get_versions
+
 __version__ = get_versions()['version']
 del get_versions
 
 
-from pyannote.core import Segment, Timeline, Annotation
+from pyannote.core import Annotation
 from pyannote.database import Database
 from pyannote.database.protocol import SpeakerDiarizationProtocol
-from pandas import read_table
 from pathlib import Path
 
 
@@ -69,7 +69,7 @@ class VTCDebug(Database):
     """VTC debugging corpus"""
 
     def __init__(self, preprocessors={}, **kwargs):
-        super(AMI, self).__init__(preprocessors=preprocessors, **kwargs)
+        super().__init__(preprocessors=preprocessors, **kwargs)
 
         self.register_protocol(
-            'SpeakerDiarization', 'Small', SpeakerDiarization)
+            'SpeakerDiarization', 'PoetryRecitalDiarization', PoetryRecitalDiarization)
