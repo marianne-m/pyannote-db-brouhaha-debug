@@ -30,7 +30,7 @@ __version__ = get_versions()['version']
 del get_versions
 
 
-from pyannote.core import Annotation
+from pyannote.core import Annotation, Timeline
 from pyannote.database import Database
 from pyannote.database.protocol import SpeakerDiarizationProtocol
 from pathlib import Path
@@ -42,11 +42,12 @@ class PoetryRecitalDiarization(SpeakerDiarizationProtocol):
 
     def _subset_iter(self, subset):
 
-        for annot_file in self.ANNOT_FOLDER.glob("*.json"):
+        annot_folder = self.ANNOT_FOLDER / Path(subset)
+        for annot_file in annot_folder.glob("*.json"):
             with open(annot_file) as json_file:
                 json_data = json.load(json_file)
             annotation = Annotation.from_json(json_data)
-            annotated = annotation.get_timeline().extent()
+            annotated = Timeline(annotation.get_timeline().extent())
             current_file = {
                 'database': 'VTCDebug',
                 'uri': annotation.uri,
