@@ -12,7 +12,7 @@ Then, tell `pyannote.database` where to look for VTCDebug audio files.
 ```bash
 $ cat ~/.pyannote/database.yml
 Databases:
-   AMI: /path/to/pyanannote-db-vtc-debug/data/audio/{uri}.ogg
+   VTCDebug: /path/to/pyanannote-db-vtc-debug/data/audio/{uri}.ogg
 ```
 
 ## Available protocols
