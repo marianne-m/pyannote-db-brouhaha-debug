@@ -158,13 +158,14 @@ class DebugFile:
                 if isinstance(utt, Silence):
                     continue
                 self.annot[utt.segment] = track.speaker.speaker_class
+        audio_dur = len(self.audio) / SAMPLING_RATE
+        self.annot = self.annot.crop(Segment(0, audio_dur))
 
     def save(self, audio_folder: Path, annot_folder: Path):
         annot_folder.mkdir(parents=True, exist_ok=True)
         OGG_TRANSFORM.build_file(input_array=self.audio,
                                  sample_rate_in=SAMPLING_RATE,
                                  output_filepath=str(audio_folder / Path(f"{self.file_id}.ogg")))
-        wavefile.write(audio_folder / Path(f"{self.file_id}.wav"), SAMPLING_RATE, self.audio)
         with open(annot_folder / Path(f"{self.file_id}.json"), "w") as json_file:
             json.dump(self.annot.for_json(), json_file)
 

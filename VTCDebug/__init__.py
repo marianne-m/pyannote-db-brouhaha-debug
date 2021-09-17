@@ -47,7 +47,7 @@ class PoetryRecitalDiarization(SpeakerDiarizationProtocol):
             with open(annot_file) as json_file:
                 json_data = json.load(json_file)
             annotation = Annotation.from_json(json_data)
-            annotated = Timeline(annotation.get_timeline().extent())
+            annotated = Timeline([annotation.get_timeline().extent()])
             current_file = {
                 'database': 'VTCDebug',
                 'uri': annotation.uri,
