@@ -37,7 +37,7 @@ setup(
     packages=find_packages(),
     package_data={
         'VTCDebug': [
-            'data/',
+            'data/annotations/*/*',
         ],
     },
     include_package_data=True,
