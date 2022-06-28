@@ -36,7 +36,7 @@ from pyannote.database.protocol import SpeakerDiarizationProtocol
 from pathlib import Path
 
 
-class PoetryRecitalDiarization(SpeakerDiarizationProtocol):
+class RegressionPoetryRecital(SpeakerDiarizationProtocol):
 
     ANNOT_FOLDER = Path(__file__).parent / Path("data/annotations")
 
@@ -49,10 +49,12 @@ class PoetryRecitalDiarization(SpeakerDiarizationProtocol):
             annotation = Annotation.from_json(json_data)
             annotated = Timeline([annotation.get_timeline().extent()])
             current_file = {
-                'database': 'VTCDebug',
+                'database': 'BrouhahaDebug',
                 'uri': annotation.uri,
                 'annotated': annotated,
-                'annotation': annotation}
+                'annotation': annotation,
+            }
+
 
             yield current_file
 
@@ -66,11 +68,11 @@ class PoetryRecitalDiarization(SpeakerDiarizationProtocol):
         return self._subset_iter('test')
 
 
-class VTCDebug(Database):
-    """VTC debugging corpus"""
+class BrouhahaDebug(Database):
+    """Brouhaha debugging corpus"""
 
     def __init__(self, preprocessors={}, **kwargs):
         super().__init__(preprocessors=preprocessors, **kwargs)
 
         self.register_protocol(
-            'SpeakerDiarization', 'PoetryRecitalDiarization', PoetryRecitalDiarization)
+            'SpeakerDiarization', 'RegressionPoetryRecital', RegressionPoetryRecital)

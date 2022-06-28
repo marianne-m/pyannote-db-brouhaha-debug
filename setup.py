@@ -36,7 +36,7 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
     packages=find_packages(),
     package_data={
-        'VTCDebug': [
+        'BrouhahaDebug': [
             'data/annotations/*/*',
         ],
     },
@@ -64,6 +64,6 @@ setup(
     ],
     entry_points="""
         [pyannote.database.databases]
-        VTCDebug=VTCDebug:VTCDebug
+        BrouhahaDebug=BrouhahaDebug:BrouhahaDebug
     """,
 )

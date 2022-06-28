@@ -1,3 +1,3 @@
 include versioneer.py
-include VTCDebug/_version.py
-recursive-include VTCDebug/data *
+include BrouhahaDebug/_version.py
+recursive-include BrouhahaDebug/data *
