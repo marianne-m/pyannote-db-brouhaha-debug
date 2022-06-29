@@ -32,6 +32,7 @@ from pathlib import Path
 from typing import List, Optional, Union
 
 import numpy as np
+import pandas as pd
 import scipy.io.wavfile as wavefile
 from pyannote.core import Segment, Annotation
 from sox import Transformer
@@ -141,6 +142,52 @@ class Track:
 
 
 @dataclass
+class SNR:
+    duration: float # seconds
+    step: float = 0.01
+    snr_min: float = 0
+    snr_max: float = 30
+    std: float = 4
+    snr_array: np.array = None
+
+    def generate(self):
+        mean = np.random.uniform(self.snr_min, self.snr_max)
+        self.snr_array = np.random.normal(
+            loc=mean,
+            scale=self.std,
+            size=int(self.duration / self.step)
+        )
+
+    def save(self, snr_folder: Path, file_id: str):
+        np.save(snr_folder / Path(f"{file_id}.npy"), self.snr_array)
+
+
+@dataclass
+class C50:
+    subset: str
+    files_count: int
+    file_id_counter: int
+    c50_min: float = -10
+    c50_max: float = 60
+    c50_values: pd.DataFrame = None
+
+    def generate(self):
+        reverb = {
+            'filename': [f'DEBUG{file_id}' for file_id in range(self.file_id_counter, file_id_counter + files_count)],
+            'c50': np.random.uniform(self.c50_min, self.c50_max, [self.files_count])
+        }
+        self.c50_values = pd.DataFrame.from_dict(reverb)
+
+    def save(self, c50_folder: Path):
+        self.c50_values.to_csv(
+            c50_folder / Path(f"{self.subset}_reverb_labels.txt"),
+            index=False,
+            header=False,
+            sep=' '
+        )
+
+
+@dataclass
 class DebugFile:
     tracks: List[Track]
     file_id: str
@@ -185,8 +232,15 @@ if __name__ == '__main__':
                       "bof", "mouai", "c'est pas trop ça", "moyen"]
 
     data_folder = Path(__file__).parent / Path("data")
+    reverb_folder = Path(__file__).parent / Path("data") / Path("reverb")
+    snr_folder = Path(__file__).parent / Path("data") / Path("snr")
     file_id_counter = 0
     for subset, files_count in FILES_COUNTS.items():
+        logging.info(f"Generating reverb info for {subset} subset")
+        c50 = C50(subset, files_count, file_id_counter)
+        c50.generate()
+        logging.info(f"Saving reverb info for {subset} subset")
+        c50.save(reverb_folder)
         for _ in range(files_count):
             spkr_a = Speaker("READER", long_utterances, transformer=BASE_TRANSFORM)
             spkr_b = Speaker("AGREER", short_agree, transformer=REVERB_TRANSFORM)
@@ -201,4 +255,8 @@ if __name__ == '__main__':
             logging.info(f"Saving file {file.file_id}")
             file.save(data_folder / Path("audio"),
                       data_folder / Path("annotations") / Path(subset))
+            logging.info(f"Generating and saving snr info for file {file.file_id}")
+            snr = SNR(duration)
+            snr.generate()
+            snr.save(snr_folder, file.file_id)
             file_id_counter += 1
