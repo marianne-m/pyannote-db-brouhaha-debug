@@ -29,8 +29,8 @@ from setuptools import setup, find_packages
 import versioneer
 
 setup(
-    name='pyannote.db.vtc.debug',
-    description="Debug DB for vtc tasks",
+    name='pyannote.db.brouhaha.debug',
+    description="Debug DB for vad tasks",
     author='Hadrien Titeux',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
