@@ -69,7 +69,7 @@ class RegressionPoetryRecital(SpeakerDiarizationProtocol):
                 'annotated': annotated,
                 'annotation': annotation,
                 'target_features': {
-                    "c50": c50,
+                    "c50": float(c50),
                     "snr": snr_feat
                 }
             }
